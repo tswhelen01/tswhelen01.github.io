@@ -1,0 +1,109 @@
+<html>
+
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+	<script>
+		var x = 180;
+		var y1 = []
+		var y2 = []
+		var speed = []
+		var score = 0
+		var time = 30
+		var r = 0
+		var g = 0
+		var b = 0
+
+		function setup() {
+			createCanvas(500, 500)
+
+			for (var i = 0; i < 5; i++) {
+				y1[i] = random(100, 800)
+				y2[i] = -100
+				speed[i] = random(3, 10)
+
+			}
+		}
+
+		function draw() {
+			background(0, 255, 255)
+
+
+			scale(0.5)
+			for (var i = 0; i < 10; i++) {
+				fill(255, 102, 255)
+				strokeWeight(3)
+				line(y1[i] + 45, y2[i] + 45, y1[i] + 45, y2[i] + 135)
+				triangle(y1[i] + 30, y2[i] + 5, y1[i] + 60, y2[i] + 5, y1[i] + 45, y2[i] + 45)
+				triangle(y1[i] + 5, y2[i] + 30, y1[i] + 5, y2[i] + 60, y1[i] + 45, y2[i] + 45)
+				triangle(y1[i] + 80, y2[i] + 30, y1[i] + 80, y2[i] + 60, y1[i] + 45, y2[i] + 45)
+				triangle(y1[i] + 45, y2[i] + 45, y1[i] + 30, y2[i] + 80, y1[i] + 60, y2[i] + 80)
+
+				y2[i] += speed[i]
+
+				if (y2[i] / 2 >= height) {
+					y2[i] = -100
+					y1[i] = random(0, 900)
+				}
+				if ((y2[i] + 135) / 2 >= 460 && (y1[i] + 45) / 2 >= x + 5 && (y1[i] + 80) / 2 <= x + 125) {
+					y2[i] = -100
+					y1[i] = random(0, 900)
+					score += 10
+				}
+				if (time == 0) {
+					fill(0)
+					textSize(30 * 2)
+					text("Your Score:" + score, 150 * 2, 250 * 2)
+					text("Click anywhere to restart again", 30 * 2, 350 * 2)
+					y2[i] = -400
+					g = 255
+					b = 255
+				}
+				if (time == 0 && mouseIsPressed) {
+					time = 30;
+					g = 0
+					b = 0
+					score = 0
+					y2[i] = 0
+					y2[i] += speed[i]
+				}
+			}
+
+
+			scale(2)
+			strokeWeight(1)
+			fill(255, 255, 0)
+			beginShape();
+			vertex(x, 440);
+			vertex(x + 120, 440);
+			vertex(x + 100, 490);
+			vertex(x + 20, 490);
+			endShape(CLOSE)
+
+			fill(r, g, b)
+			textSize(30)
+			text("Score" + ":" + score, 10, 35)
+
+			fill(0)
+			textSize(30)
+			if (frameCount % 60 == 0 && time > 0) {
+				time--
+			}
+			text("Time Left" + ":" + time, 300, 35)
+
+
+
+			if (keyIsDown(LEFT_ARROW)) {
+				x -= 10
+			} else if (keyIsDown(RIGHT_ARROW)) {
+				x += 10
+			}
+
+			while (x < 5) {
+				x = 5
+			}
+			while (x > 375) {
+				x = 375
+			}
+		}
+	</script>
+</head>
